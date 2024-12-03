@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "980171789197",
+    "firebase_url": "https://taxiwaala-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "taxiwaala",
+    "storage_bucket": "taxiwaala.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980171789197:android:05c9f7de02f52a076de3c4",
+        "android_client_info": {
+          "package_name": "com.thexkidd.userapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980171789197-fc3ovpflolc48mv61079sqscfvr1f1v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDj6xMJWwlC7RUy3dTaOutUJUo5A22G_hY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980171789197-fc3ovpflolc48mv61079sqscfvr1f1v4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "980171789197-d4rkt7la9mfbjc0nga2sk70d2ctre8cr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thexkidd.userapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980171789197:android:0485c43e84f32e516de3c4",
+        "android_client_info": {
+          "package_name": "com.userapp.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "980171789197-0gqglm07soiifs0b61ljkjssvppbbchu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.userapp.app",
+            "certificate_hash": "8f054f30fdd6fd742ad71da52e83e96284bc1bbb"
+          }
+        },
+        {
+          "client_id": "980171789197-fc3ovpflolc48mv61079sqscfvr1f1v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDj6xMJWwlC7RUy3dTaOutUJUo5A22G_hY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "980171789197-fc3ovpflolc48mv61079sqscfvr1f1v4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "980171789197-d4rkt7la9mfbjc0nga2sk70d2ctre8cr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thexkidd.userapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
