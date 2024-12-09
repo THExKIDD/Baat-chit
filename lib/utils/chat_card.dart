@@ -34,7 +34,7 @@ class _ChatCardState extends State<ChatCard> {
       height: size.height * .09,
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: size.width * 0.02,vertical: 2),
-        shape: RoundedRectangleBorder(),
+        shape: const RoundedRectangleBorder(),
         //color: Colors.blue.shade100,
         child: InkWell(
           onLongPress: (){

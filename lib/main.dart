@@ -1,16 +1,11 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_notification_channel/flutter_notification_channel.dart';
+import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:userapp/providers/passProvider.dart';
-import 'package:userapp/screens/login_screen.dart';
-import 'package:userapp/screens/main_screen.dart';
-import 'package:userapp/screens/register_screen.dart';
 import 'package:userapp/screens/splash_screen1.dart';
-import 'package:userapp/splash_screen.dart';
-import 'package:userapp/theme%20provider/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:userapp/firebase_options.dart';
 
@@ -23,13 +18,22 @@ Future<void> main() async{
 
     ).then((_) {
 
-      print('Firebase initialized');
+      log('Firebase initialized');
 
     }).catchError((error) {
 
-      print('Error initializing Firebase: $error');
+      log('Error initializing Firebase: $error');
 
     });
+
+
+  var result = await FlutterNotificationChannel().registerNotificationChannel(
+    description: 'for showing message notifications',
+    id: 'chats',
+    importance: NotificationImportance.IMPORTANCE_HIGH,
+    name: 'Chats',
+  );
+  log(result);
 
   await Supabase.initialize(
     url: 'https://bfpxwrffoovoroorlnuj.supabase.co',
@@ -41,7 +45,7 @@ Future<void> main() async{
         MultiProvider(providers: [
           ChangeNotifierProvider(create: (_) => PassProvider()),
         ],
-          child: MyApp(),
+          child: const MyApp(),
         )
     );
 
@@ -54,7 +58,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Chat',
       debugShowCheckedModeBanner: false,
       home: SplashScreen1(),

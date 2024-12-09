@@ -3,9 +3,11 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:userapp/API/api.dart';
 import 'package:userapp/assistant%20methods/date_util.dart';
 import 'package:userapp/models/message.dart';
+import 'package:userapp/utils/dialogs.dart';
 
 class MessageCard extends StatefulWidget {
   final Message message;
@@ -19,9 +21,14 @@ class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Api.user.uid == widget.message.fromId
-    ? _blueMessage()
-    : _purpleMessage();
+
+    bool isMe = Api.user.uid == widget.message.fromId;
+    return InkWell(
+      onLongPress: (){
+        _showBottomSheet(isMe);
+      },
+      child: isMe ? _blueMessage() : _purpleMessage(),
+    );
 
   }
 
@@ -171,4 +178,178 @@ Widget _purpleMessage()
       ],
     );
   }
+
+  void _showBottomSheet(bool checkUser){
+    final size = MediaQuery.of(context).size;
+    showModalBottomSheet(context: context,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20))
+        ),
+        builder: (_) {
+          return SingleChildScrollView(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Container(
+                  height: 4,
+                  margin: EdgeInsets.symmetric(vertical: size.height * 0.015,horizontal: size.width * .4 ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey
+                  ),
+                ),
+
+                if(widget.message.type == Type.text)
+                _OptionItem(
+                    icon: const Icon(Icons.copy_all_outlined,
+                      color: Colors.blue,
+                      size: 26,
+                    ),
+                    name: 'Copy Text',
+                    onTap: () async {
+                      await Clipboard.setData(
+                          ClipboardData(text: widget.message.message))
+                          .then((value) {
+                        //for hiding bottom sheet
+                        Navigator.of(context).pop();
+
+                        Dialogs.showSnackbar(context, 'Text Copied!');
+                      });
+                    }),
+
+
+
+                if(checkUser)
+                Divider(
+                  color: Colors.black54,
+                  endIndent: size.width * .04 ,
+                  indent: size.height * .04,
+                ),
+
+
+
+                //edit message
+                /*if(widget.message.type == Type.text && checkUser)
+                _OptionItem(
+                    icon: const Icon(Icons.edit,
+                      color: Colors.blue,
+                      size: 26,
+                    ),
+                    name: 'Edit Message',
+                    onTap: ()async{
+                      if(mounted) {
+                        Navigator.of(context).pop();
+                      }
+
+                      _showMessageUpdateDialog();
+
+
+
+
+                    }
+                ),
+*/
+
+
+
+                // delete message
+                if(checkUser)
+                _OptionItem(
+                    icon: const Icon(Icons.delete,
+                      color: Colors.red,
+                      size: 26,
+                    ),
+                    name: 'Delete Message',
+                    onTap: ()async {
+
+                      await Api.deleteMsg(widget.message);
+                    }
+                ),
+
+
+
+                Divider(
+                  color: Colors.black54,
+                  endIndent: size.width * .04 ,
+                  indent: size.height * .04,
+                ),
+                //Sent at
+                _OptionItem(
+                    icon: const Icon(Icons.remove_red_eye,
+                      color: Colors.blue,
+                    ),
+                    name: 'Sent At : ${DateUtil.getMessageTime(context: context, time: widget.message.sent)}',
+                    onTap: (){}
+                ),
+
+                //Read at
+                _OptionItem(
+                    icon: const Icon(Icons.remove_red_eye,
+                      color: Colors.greenAccent,
+                      size: 26,
+                    ),
+                    name: widget.message.read.isEmpty ?
+                        'Read At : not seen yet'
+                    :'Read At : ${DateUtil.getMessageTime(context: context, time: widget.message.read)}',
+                    onTap: (){}
+                ),
+
+              ],
+
+            ),
+          );
+        });
+
+  }
+  void _showMessageUpdateDialog()
+  {
+    String updatedMsg = widget.message.message;
+
+    showDialog(context: context, builder: (_) => const AlertDialog(
+      title: Row(
+        children: [
+          Icon(Icons.message,color: Colors.blue,size: 28,),
+          Text('Update Message')
+        ],
+      ),
+    ));
+  }
 }
+
+
+
+
+class _OptionItem extends StatelessWidget {
+  final Icon icon;
+  final String name;
+  final VoidCallback onTap;
+  const _OptionItem({super.key, required this.icon, required this.name, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.only(left: size.width *.05,top: size.height * .015, bottom: size.height * .02),
+        child: Row(
+          children: [
+           icon,
+            Flexible(
+                child: Text(
+                  '    $name',
+              style: const TextStyle(
+                color: Colors.black54,
+                letterSpacing: 0.5,
+              ),
+            )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

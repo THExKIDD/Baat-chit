@@ -1,14 +1,8 @@
 
-
-
-
 import 'dart:developer';
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:userapp/API/api.dart';
 import 'package:userapp/models/chat_user.dart';
 import 'package:userapp/screens/profile_screen.dart';
@@ -52,6 +46,7 @@ class _MainScreenState extends State<MainScreen> {
         }
         if (message.contains('pause')) {
           Api.updateActiveStatus(false);
+          log(' \n updated the status \n');
         }
       }
       return Future.value(message);

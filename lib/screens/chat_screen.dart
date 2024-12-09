@@ -6,6 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:userapp/API/api.dart';
 import 'package:userapp/assistant%20methods/date_util.dart';
@@ -26,6 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
 
+
   //for storing msgs
    List<Message> _list = [];
 
@@ -39,12 +42,31 @@ class _ChatScreenState extends State<ChatScreen> {
      _scrollWaala.jumpTo(_scrollWaala.position.maxScrollExtent);
 
    }*/
+
+
+   @override
+
+   void dispose() {
+
+     _scrollController.dispose();
+
+     super.dispose();
+
+   }
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+   final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: FocusScope.of(context).unfocus,
-      child: SafeArea(
+    return SafeArea(
+      top: false,
+      child: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
         child: PopScope(
           canPop: !_showEmoji, // Control whether the route can be popped
           onPopInvoked: (didPop) async {
@@ -63,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
             body: Column(
               children: [
-                Expanded(
+                Flexible(
                   child: StreamBuilder(
                      stream: Api.getAllMessages(widget.user),
                       builder: (context, snapshot) {
@@ -73,7 +95,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         {
                           case ConnectionState.waiting:
                           case ConnectionState.none:
-                            return const SizedBox();
+                            return SizedBox(
+                              height: size.height,
+                            );
 
                           case ConnectionState.active:
                           case ConnectionState.done:
@@ -91,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                         if(_list.isNotEmpty)
                         {
-                          return ListView.builder(reverse: true,itemBuilder: (context,index){
+                          return ListView.builder(controller: _scrollController,reverse: true,itemBuilder: (context,index){
 
                             return MessageCard(message: _list[index]);
                           },
@@ -110,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       }
                   ),
                 ),
-// for showing image upload loading
+                // for showing image upload loading
                 if(_isUploading)
                 const Align(
                   alignment: Alignment.centerRight,
@@ -174,6 +198,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   IconButton(
                       onPressed: (){
+                        // Method 3: Using System Channels
+                        SystemChannels.textInput.invokeMethod('TextInput.hide');
                         FocusScope.of(context).unfocus;
                         setState(() {
                           _showEmoji = !_showEmoji;
@@ -274,10 +300,12 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: (){
                 
                try{
-                 if(_textController.text.isNotEmpty)
+                 if(_textController.text.isNotEmpty && _textController.text != " ")
                  {
                    Api.sendMessage(widget.user, _textController.text,Type.text);
                    _textController.text = '';
+
+
                  }
                }
                    catch(e)

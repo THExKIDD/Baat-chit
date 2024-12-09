@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:userapp/API/api.dart';
-import 'package:userapp/Global/global.dart';
 import 'package:userapp/screens/login_screen.dart';
 import 'package:userapp/screens/main_screen.dart';
 
@@ -18,15 +17,15 @@ class _SplashScreen1State extends State<SplashScreen1> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 2),(){
+    Future.delayed(const Duration(seconds: 2),(){
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black38));
       if(Api.auth.currentUser != null){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainScreen()));
       }
       else
         {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
         }
 
     });
@@ -38,24 +37,24 @@ class _SplashScreen1State extends State<SplashScreen1> {
       body: Stack(
         children: [
           Positioned(
-              child: Image.asset('lib/images/chat(2).png'),
             top: size.height * 0.15,
             width: size.width * 0.5,
             right: size.width * 0.25,
+            child: Image.asset('lib/images/chat(2).png'),
           ),
           
           Positioned(
-              child: Text(
-                  'Made by Tarun 😎',
+            bottom: size.height * 0.15,
+            width: size.width,
+            child: const Text(
+              'Made by Tarun 😎',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'bebe',
               ),
-                textAlign: TextAlign.center,
-              ),
-            bottom: size.height * 0.15,
-            width: size.width,
+              textAlign: TextAlign.center,
+            ),
           )
         ],
       ),

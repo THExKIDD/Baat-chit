@@ -44,4 +44,11 @@ class PassProvider with ChangeNotifier{
 
     }
 
+    void showEmoji(bool emojiShow)
+    {
+      emojiShow = !emojiShow;
+
+      notifyListeners();
+    }
+
   }

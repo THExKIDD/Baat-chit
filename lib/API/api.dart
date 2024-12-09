@@ -1,15 +1,20 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Firebase_Auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:gallery_saver_updated/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:userapp/API/api_storage.dart';
 import 'package:userapp/Controllers/controllers.dart';
 
 import 'package:userapp/models/chat_user.dart';
 import 'package:userapp/models/message.dart';
+import 'package:userapp/utils/dialogs.dart';
 
 class Api{
   static Firebase_Auth.User get user => auth.currentUser!;
@@ -124,9 +129,132 @@ static Future<void> updateUserInfo() async{
     final Message message = Message(read: '', told: chatUser.id, message: msg, type: type, sent: time, fromId: user.uid);
 
     final ref = firestore.collection('chats/${getConvoId(chatUser.id)}/messages/');
-    await ref.doc(time).set(message.toJson()).then((value){
-      log('MESSAGE SENT ');
-    });
+    await ref.doc(time).set(message.toJson()).then((value) =>
+      ApiStorage.sendNotification(chatUser, type == Type.text ? msg : "sent an image" )
+    );
+
+  }
+
+  //download image
+  static Future<void> downloadImage(String fileUrl) async {
+
+    try {
+
+      // Step 1: Extract the file path from the URL
+
+      String searchString = 'chat_image';
+
+      int index = fileUrl.indexOf(searchString);
+
+      late String result;
+
+
+      if (index != -1) {
+
+        result = fileUrl.substring(index + searchString.length);
+
+      } else {
+
+        print('"$searchString" not found in the URL.');
+
+        return; // Exit if the search string is not found
+
+      }
+
+
+      // Step 2: Download the image data from Supabase
+
+      final Uint8List imageData = await Supabase.instance.client.storage.from('chat_image').download(result);
+
+
+      // Step 3: Get the directory to save the image
+
+      final directory = await getApplicationDocumentsDirectory();
+
+      final imageDirectory = Directory('${directory.path}/images');
+
+
+      // Create the directory if it doesn't exist
+
+      if (!await imageDirectory.exists()) {
+
+        await imageDirectory.create(recursive: true);
+
+      }
+
+
+      final filePath = '${imageDirectory.path}$result'; // Ensure the path is correct
+
+      final file = File(filePath);
+
+
+      // Step 4: Write the file data to the local file
+
+      await file.writeAsBytes(imageData);
+
+
+      // Step 5: Save the image to the gallery
+
+      final galleryResult = await GallerySaver.saveImage(file.path);
+
+      if (galleryResult != null && galleryResult) {
+
+        print("Image moved to gallery");
+
+      } else {
+
+        print("Failed to save image to gallery");
+
+      }
+
+    } catch (e) {
+
+      log('downloadImage: ${e.toString()}');
+
+    }
+
+  }
+
+
+  static Future<void> updateMessage(Message message) async
+  {
+
+
+
+
+  }
+
+
+  static Future<void> deleteMsg(Message message) async
+  {
+    await firestore
+        .collection('chats/${getConvoId(message.told)}/messages/')
+        .doc(message.sent)
+        .delete();
+
+    if(message.type == Type.image){
+
+
+        String url = message.message;
+
+        // Define the substring to search for
+        String searchString = 'chat_image';
+
+        // Find the index of the search string
+        int index = url.indexOf(searchString);
+
+        late String result;
+        if (index != -1) {
+          // Get the substring starting from the end of 'chat_image'
+          result = url.substring(index + searchString.length);
+          log('Substring after "chat_image": $result');
+        } else {
+          log('"$searchString" not found in the URL.');
+        }
+
+        await bucket.client.storage.from('chat_image').remove([result]);
+    }
+
   }
 
 
@@ -149,7 +277,7 @@ static Future<void> updateUserInfo() async{
     String pfpPath = 'profile_pictures/${user.uid}.$ext';
 
     await bucket.client.storage.from('chat_image').update(pfpPath, file).then((value){
-      log('data transferred : ${value}');
+      log('data transferred : $value');
     }).onError((e,stacktrace) async{
       if(e is StorageException)
         {
@@ -158,7 +286,7 @@ static Future<void> updateUserInfo() async{
         }
     });
 
-    await (me.image = bucket.client.storage.from('chat_image').getPublicUrl(pfpPath));
+    me.image = bucket.client.storage.from('chat_image').getPublicUrl(pfpPath);
 // updating firestore path
     await firestore.collection('users').doc(user.uid).update({
       'image' : me.image
@@ -187,7 +315,7 @@ static Future<void> updateUserInfo() async{
   static Future<void> sendChatImage(ChatUser chatUser , File file) async
   {
 
-    final ext  = file.path.split('.').last;
+
 
     final ref = bucket.client.storage.from('chat_image');
 
@@ -251,11 +379,27 @@ static Future<void> updateUserInfo() async{
          {
            me.pushToken = value;
 
+
            log('push token: ${me.pushToken}');
          }
 
      });
+
+     FirebaseMessaging.onMessage.listen((RemoteMessage message){
+       
+       log('Got a message in foreground!');
+       log('Message data : ${message.data}');
+       
+       if(message.notification != null)
+         {
+           log('Message also contained a notification: ${message.notification}');
+         }
+     });
+
+
    }
+
+
 
 
 
