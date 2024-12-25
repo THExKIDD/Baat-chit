@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage(
-                    'lib/images/dark_car.jpg'
+                    'lib/images/background.webp'
                 ),
               fit: BoxFit.fill,
             )
@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: _formKey1,
                   child: Column(
                     children: [
-
+/*
                       TextFormField(
                         style: TextStyle(
                           color: Colors.white
@@ -234,14 +234,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             }, icon: Icon(passProvider.pass ? Icons.visibility_off : Icons.visibility),color: Colors.white,),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20,),
+                      ),*/
+                      /*const SizedBox(height: 20,),
                       Container(
                         height: 40,
                         width: double.infinity,
                         child: ElevatedButton(onPressed: (){
-                          print('pressed');
-                          submit();
+                          log('pressed');
+
                         },
                             child: const Text("Login",
                               style: TextStyle(
@@ -251,12 +251,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 60,),
-
+*/
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TextButton(onPressed: (){
+                          /*TextButton(onPressed: (){
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RegisterScreen()));
                           },
                               child: const Text(
@@ -266,29 +266,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 12
                               ),
                               )
-                          ),
-                          const SizedBox(height: 20,),
-                          TextButton(onPressed: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Forgotpassscreen()));
-                          },
-                              child: const Text("Forgot Password?",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12
-                                ),
+                          ),*/
+                          // const SizedBox(height: 20,),
+                          // TextButton(onPressed: (){
+                          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Forgotpassscreen()));
+                          // },
+                          //     child: const Text("Forgot Password?",
+                          //       style: TextStyle(
+                          //         color: Colors.white,
+                          //         fontSize: 12
+                          //       ),
 
-                              )
-                          ),
+                             // )
+                         // ),
                         ],
                       ),
 
-                      TextButton(
+                      ElevatedButton(
                           onPressed: (){
                             googleButton();
                           },
                           child: Text('Login with Google',
                             style: TextStyle(
-                              color: Colors.white
+                                color: Colors.blueAccent
                             ),
                           )
                       )

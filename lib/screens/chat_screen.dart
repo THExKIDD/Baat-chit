@@ -302,8 +302,13 @@ class _ChatScreenState extends State<ChatScreen> {
                try{
                  if(_textController.text.isNotEmpty && _textController.text != " ")
                  {
+                   if(_list.isEmpty){
+                     Api.sendFirstMessage(widget.user, _textController.text, Type.text);
+                   }
+                   else{
                    Api.sendMessage(widget.user, _textController.text,Type.text);
                    _textController.text = '';
+                   }
 
 
                  }
