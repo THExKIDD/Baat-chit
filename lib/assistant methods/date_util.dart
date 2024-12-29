@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DateUtil
 {
@@ -33,7 +34,7 @@ class DateUtil
   }
 
 
-  static String getMessageTime( {required BuildContext context,  required String time})
+  /*static String getMessageTime( {required BuildContext context,  required String time})
   {
     final DateTime sent =  DateTime.fromMillisecondsSinceEpoch(int.parse(time));
 
@@ -54,6 +55,26 @@ class DateUtil
 
 
 
+  }*/
+
+
+  static String getMessageTime({required String time}) {
+    final DateTime sent = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
+    final DateTime now = DateTime.now();
+
+    final String formattedTime = DateFormat('h:mm a').format(sent);
+
+    if (now.day == sent.day &&
+        now.month == sent.month &&
+        now.year == sent.year) {
+      return formattedTime;
+    }
+
+    final String formattedDate = now.year == sent.year
+        ? '${sent.day} ${getMonth(sent)}'
+        : '${sent.day} ${getMonth(sent)} ${sent.year}';
+
+    return '$formattedTime - $formattedDate';
   }
 
   static getMonth(DateTime date) {

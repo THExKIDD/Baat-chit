@@ -208,14 +208,18 @@ Widget _purpleMessage()
                       size: 26,
                     ),
                     name: 'Copy Text',
-                    onTap: () async {
+                    onTap: (ctx) async {
                       await Clipboard.setData(
                           ClipboardData(text: widget.message.message))
                           .then((value) {
                         //for hiding bottom sheet
-                        Navigator.of(context).pop();
+                        if(ctx.mounted){
+                          Navigator.of(ctx).pop();
+                          Dialogs.showSnackbar(ctx, 'Text Copied!');
+                        }
 
-                        Dialogs.showSnackbar(context, 'Text Copied!');
+
+
                       });
                     }),
 
@@ -231,26 +235,25 @@ Widget _purpleMessage()
 
 
                 //edit message
-                /*if(widget.message.type == Type.text && checkUser)
+                if(widget.message.type == Type.text && checkUser)
                 _OptionItem(
                     icon: const Icon(Icons.edit,
                       color: Colors.blue,
                       size: 26,
                     ),
                     name: 'Edit Message',
-                    onTap: ()async{
-                      if(mounted) {
-                        Navigator.of(context).pop();
+                    onTap: (ctx)async{
+                      if(ctx.mounted) {
+                       _showMessageUpdateDialog(ctx);
                       }
 
-                      _showMessageUpdateDialog();
+
 
 
 
 
                     }
                 ),
-*/
 
 
 
@@ -262,7 +265,7 @@ Widget _purpleMessage()
                       size: 26,
                     ),
                     name: 'Delete Message',
-                    onTap: ()async {
+                    onTap: (ctx)async {
 
                       await Api.deleteMsg(widget.message);
                     }
@@ -280,8 +283,8 @@ Widget _purpleMessage()
                     icon: const Icon(Icons.remove_red_eye,
                       color: Colors.blue,
                     ),
-                    name: 'Sent At : ${DateUtil.getMessageTime(context: context, time: widget.message.sent)}',
-                    onTap: (){}
+                    name: 'Sent At : ${DateUtil.getMessageTime(time: widget.message.sent)}',
+                    onTap: (ctx){}
                 ),
 
                 //Read at
@@ -292,8 +295,8 @@ Widget _purpleMessage()
                     ),
                     name: widget.message.read.isEmpty ?
                         'Read At : not seen yet'
-                    :'Read At : ${DateUtil.getMessageTime(context: context, time: widget.message.read)}',
-                    onTap: (){}
+                    :'Read At : ${DateUtil.getMessageTime(time: widget.message.read)}',
+                    onTap: (ctx){}
                 ),
 
               ],
@@ -303,11 +306,11 @@ Widget _purpleMessage()
         });
 
   }
-  void _showMessageUpdateDialog()
+  void _showMessageUpdateDialog(final BuildContext ctx)
   {
     String updatedMsg = widget.message.message;
 
-    showDialog(context: context, builder: (_) => const AlertDialog(
+    showDialog(context: ctx, builder: (_) => const AlertDialog(
       title: Row(
         children: [
           Icon(Icons.message,color: Colors.blue,size: 28,),
@@ -324,14 +327,14 @@ Widget _purpleMessage()
 class _OptionItem extends StatelessWidget {
   final Icon icon;
   final String name;
-  final VoidCallback onTap;
+  final Function(BuildContext) onTap;
   const _OptionItem({super.key, required this.icon, required this.name, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: onTap,
+      onTap: () => onTap(context),
       child: Padding(
         padding: EdgeInsets.only(left: size.width *.05,top: size.height * .015, bottom: size.height * .02),
         child: Row(
