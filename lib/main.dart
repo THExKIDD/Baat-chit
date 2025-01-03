@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:userapp/firebase_options.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
 
     Firebase.initializeApp(
 
@@ -36,9 +38,11 @@ Future<void> main() async{
   log(result);
 
   await Supabase.initialize(
-    url: 'https://bfpxwrffoovoroorlnuj.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmcHh3cmZmb292b3Jvb3JsbnVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEyNjI2NTYsImV4cCI6MjA0NjgzODY1Nn0.rocrnSut9iWU4WZgGOU2EfFE3thN-xfR1s5c5HdQkbI',
-  );
+    url: dotenv.env['SUPABASEURL'] ?? 'no_url',
+    anonKey: dotenv.env['ANONKEY'] ?? 'no_key',
+  ).then((val){
+    log('Supabase Initialized');
+  });
 
 
     runApp(

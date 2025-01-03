@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:userapp/models/chat_user.dart';
@@ -10,6 +11,8 @@ import 'package:userapp/models/message.dart' as messageModel;
 
 
 class ApiStorage {
+
+
 
 
   static Future<String> getFirebaseMessagingToken() async
@@ -62,7 +65,7 @@ class ApiStorage {
 
     final String serverKey = await getFirebaseMessagingToken();
 
-    String endPointFirebaseCloudMessaging = "https://fcm.googleapis.com/v1/projects/taxiwaala/messages:send";
+    String endPointFirebaseCloudMessaging = dotenv.env['ENDPOINTFIREBASECLOUDMESSAGING'] ?? 'no_key';
 
     final Map<String , dynamic> message =
     {
