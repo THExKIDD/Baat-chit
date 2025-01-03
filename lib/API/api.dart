@@ -245,9 +245,13 @@ static Future<void> updateUserInfo() async{
   }
 
 
-  static Future<void> updateMessage(Message message) async
+  static Future<void> updateMessage(Message message,String updatedMsg) async
   {
 
+    await firestore
+        .collection('chats/${getConvoId(message.told)}/messages/')
+        .doc(message.sent)
+        .update({'message': updatedMsg});
 
 
 

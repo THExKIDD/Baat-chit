@@ -268,6 +268,8 @@ Widget _purpleMessage()
                     onTap: (ctx)async {
 
                       await Api.deleteMsg(widget.message);
+
+                      Navigator.pop(ctx);
                     }
                 ),
 
@@ -310,13 +312,65 @@ Widget _purpleMessage()
   {
     String updatedMsg = widget.message.message;
 
-    showDialog(context: ctx, builder: (_) => const AlertDialog(
-      title: Row(
+    showDialog(
+        context: ctx,
+        builder: (_) => AlertDialog(
+      contentPadding: const EdgeInsets.only(
+          left: 24, right: 24, top: 20, bottom: 10),
+
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+
+      //title
+      title: const Row(
         children: [
-          Icon(Icons.message,color: Colors.blue,size: 28,),
-          Text('Update Message')
+          Icon(
+            Icons.message,
+            color: Colors.blue,
+            size: 28,
+          ),
+          Text(' Update Message')
         ],
       ),
+
+      //content
+      content: TextFormField(
+        initialValue: updatedMsg,
+        maxLines: null,
+        onChanged: (value) => updatedMsg = value,
+        decoration: const InputDecoration(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15)))),
+      ),
+
+      //actions
+      actions: [
+        //cancel button
+        MaterialButton(
+            onPressed: () {
+              //hide alert dialog
+              Navigator.pop(ctx);
+            },
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.blue, fontSize: 16),
+            )),
+
+        //update button
+        MaterialButton(
+            onPressed: () {
+              Api.updateMessage(widget.message, updatedMsg);
+              //hide alert dialog
+              Navigator.pop(ctx);
+
+              //for hiding bottom sheet
+              Navigator.pop(ctx);
+            },
+            child: const Text(
+              'Update',
+              style: TextStyle(color: Colors.blue, fontSize: 16),
+            ))
+      ],
     ));
   }
 }
