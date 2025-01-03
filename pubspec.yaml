@@ -56,7 +56,6 @@ dependencies:
   googleapis: ^13.2.0
   googleapis_auth: ^1.6.0
   flutter_notification_channel: ^3.1.0
-  gallery_saver_updated: ^3.0.0
   intl: ^0.20.1
   flutter_dotenv: ^5.2.1
 

@@ -5,16 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Firebase_Auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:userapp/API/api_storage.dart';
 import 'package:userapp/Controllers/controllers.dart';
-
 import 'package:userapp/models/chat_user.dart';
 import 'package:userapp/models/message.dart';
-import 'package:userapp/utils/dialogs.dart';
 
 class Api{
   static Firebase_Auth.User get user => auth.currentUser!;
@@ -165,7 +161,7 @@ static Future<void> updateUserInfo() async{
   }
 
   //download image
-  static Future<void> downloadImage(String fileUrl) async {
+  /*static Future<void> downloadImage(String fileUrl) async {
 
     try {
 
@@ -184,7 +180,7 @@ static Future<void> updateUserInfo() async{
 
       } else {
 
-        print('"$searchString" not found in the URL.');
+        log('"$searchString" not found in the URL.');
 
         return; // Exit if the search string is not found
 
@@ -228,11 +224,11 @@ static Future<void> updateUserInfo() async{
 
       if (galleryResult != null && galleryResult) {
 
-        print("Image moved to gallery");
+        log("Image moved to gallery");
 
       } else {
 
-        print("Failed to save image to gallery");
+        log("Failed to save image to gallery");
 
       }
 
@@ -243,7 +239,7 @@ static Future<void> updateUserInfo() async{
     }
 
   }
-
+*/
 
   static Future<void> updateMessage(Message message,String updatedMsg) async
   {

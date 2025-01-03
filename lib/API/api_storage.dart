@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:userapp/models/chat_user.dart';
 import 'package:userapp/API/api.dart' as myApi;
-import 'package:userapp/models/message.dart' as messageModel;
 
 
 class ApiStorage {
