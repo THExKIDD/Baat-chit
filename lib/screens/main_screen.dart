@@ -45,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
         if (message!.contains('resume')) {
           Api.updateActiveStatus(true);
         }
-        if (message.contains('pause')) {
+        if (message.contains('pause') || message.contains('detached')) {
           Api.updateActiveStatus(false);
           log(' \n updated the status \n');
         }
@@ -95,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child:PopScope(
         canPop: !_isSearching, // Control whether the route can be popped
-        onPopInvoked: (didPop) async {
+        onPopInvokedWithResult: (didPop,Object? result) async {
           if (_isSearching && !didPop) { // Only handle if _isSearching is true and the route wasn't popped
             setState(() {
               _isSearching = !_isSearching;
@@ -135,8 +135,8 @@ class _MainScreenState extends State<MainScreen> {
 
                   },
                 )
-                :const Text(
-              'KARLO BAAT',
+                : const Text(
+              'Baat Chit',
               style: TextStyle(
                 fontFamily: 'bebe',
                 fontWeight: FontWeight.bold,
