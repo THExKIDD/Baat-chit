@@ -22,14 +22,14 @@ class ApiStorage {
 
       "type": "service_account",
       "project_id": "taxiwaala",
-      "private_key_id": dotenv.env["PRIVATEKEYID"] ?? "not_found",
-      "private_key": dotenv.env["PRIVATEKEY"] ?? "not_found",
+      "private_key_id": dotenv.env["PRIVATEKEYID"] ?? "not found" ,
+      "private_key": dotenv.env["PRIVATEKEY"] ?? 'not found',
       "client_email": "baateinthexkidd@taxiwaala.iam.gserviceaccount.com",
-      "client_id": dotenv.env["CLIENTID"] ?? "not_found",
+      "client_id": dotenv.env["CLIENTID"] ?? 'not found',
       "auth_uri": "https://accounts.google.com/o/oauth2/auth",
       "token_uri": "https://oauth2.googleapis.com/token",
       "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url": dotenv.env["CLIENT_X509_CERT_URL"] ?? "not_found",
+      "client_x509_cert_url": dotenv.env["CLIENT_X509_CERT_URL"] ?? 'notfound',
       "universe_domain": "googleapis.com"
 
     };
