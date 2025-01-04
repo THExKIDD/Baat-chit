@@ -1,7 +1,7 @@
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:
   image_path: "lib/images/chat(2).png"
-  adaptive_icon_background: "#ffffff"
+  adaptive_icon_background: "#00000000"
   adaptive_icon_foreground: "lib/images/chat(2).png"
 
 
