@@ -155,7 +155,7 @@ static Future<void> updateUserInfo() async{
 
     final ref = firestore.collection('chats/${getConvoId(chatUser.id)}/messages/');
     await ref.doc(time).set(message.toJson()).then((value) =>
-      ApiStorage.sendNotification(chatUser, type == Type.text ? msg : "sent an image" )
+      ApiStorage.sendNotification(message ,chatUser, type == Type.text ? msg : "sent an image" )
     );
 
   }

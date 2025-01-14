@@ -2,11 +2,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:userapp/models/chat_user.dart';
 import 'package:userapp/API/api.dart' as myApi;
+import 'package:userapp/models/message.dart';
 
 
 class ApiStorage {
@@ -59,9 +61,15 @@ class ApiStorage {
   }
 
 
-  static sendNotification(ChatUser user,String msg) async{
+
+  static sendNotification(Message userMessage,ChatUser user,String msg) async{
 
 
+    final getTitle =  await FirebaseFirestore.instance.collection('users').doc('$userMessage.fromId').get();
+
+    Map<String,dynamic> nameData = getTitle.data() as Map<String,dynamic>;
+    log('\n \n getTitle : ${nameData['name']} \n \n');
+    
     final String serverKey = await getFirebaseMessagingToken();
 
     String endPointFirebaseCloudMessaging = dotenv.env['ENDPOINTFIREBASECLOUDMESSAGING'] ?? 'no_key';
@@ -75,7 +83,7 @@ class ApiStorage {
 
         'notification': {
 
-          'title': user.name,
+          'title': nameData['name'],
 
           'body': msg,
 
