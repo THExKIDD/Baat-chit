@@ -52,6 +52,8 @@ This project is a starting point for a Flutter application.
 
 - Send text messages, images
 
+- Download Images
+
 - Realtime Read Receipts 
 
 - Realtime message update , delete
