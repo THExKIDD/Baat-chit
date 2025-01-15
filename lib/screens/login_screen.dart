@@ -57,11 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if(await Api.userExists())
           {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainScreen()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainScreen()));
           }
         else{
           Api.createUser().then((value){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MainScreen()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainScreen()));
           });
         }
 
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }).onError((error,stackTrace){
       Fluttertoast.showToast(msg: error.toString());
-      print('\n \n ${error.toString()} \n \n \n \n ');
+      log('\n \n ${error.toString()} \n \n \n \n ');
       error1 = error.toString();
     });
   }
@@ -252,7 +252,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 60,),
 */
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -286,7 +286,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: (){
                             googleButton();
                           },
-                          child: Text('Login with Google',
+                          child: const Text('Login with Google',
                             style: TextStyle(
                                 color: Colors.blueAccent
                             ),

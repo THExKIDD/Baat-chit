@@ -208,24 +208,26 @@ class _ChatScreenState extends State<ChatScreen> {
                       icon: const Icon(Icons.emoji_emotions,color: Colors.blueAccent,)
                   ),
 
-                   Expanded(
-                    child: TextField(
-                      onTap: (){
-                        if(_showEmoji) {
-                          setState(() {
-                          _showEmoji = !_showEmoji;
-                        });
-                        }
-                      },
-                      controller: _textController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        hintText: 'Type Something...',
-                        hintStyle: TextStyle(
-                          color: Colors.blueAccent,
+                   Flexible(
+                    child: SingleChildScrollView(
+                      child: TextField(
+                        onTap: (){
+                          if(_showEmoji) {
+                            setState(() {
+                            _showEmoji = !_showEmoji;
+                          });
+                          }
+                        },
+                        controller: _textController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          hintText: 'Type Something...',
+                          hintStyle: TextStyle(
+                            color: Colors.blueAccent,
+                          ),
+                          border: InputBorder.none,
                         ),
-                        border: InputBorder.none,
                       ),
                     ),
                   ),
