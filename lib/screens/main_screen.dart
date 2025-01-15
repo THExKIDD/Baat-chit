@@ -122,7 +122,7 @@ class _MainScreenState extends State<MainScreen> {
 
                     for(var i in list){
                       if(i.name.toLowerCase().contains(val.toLowerCase()) ||
-                          i.email.toLowerCase().contains(val.toLowerCase()))
+                          i.email.substring(i.email.indexOf('@')-1).toLowerCase().contains(val.toLowerCase()))
                       {
 
                         _searchList.add(i);

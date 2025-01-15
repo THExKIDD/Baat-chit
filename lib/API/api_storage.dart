@@ -65,10 +65,14 @@ class ApiStorage {
   static sendNotification(Message userMessage,ChatUser user,String msg) async{
 
 
-    final getTitle =  await FirebaseFirestore.instance.collection('users').doc('$userMessage.fromId').get();
+    DocumentSnapshot getTitle =  await FirebaseFirestore.instance.collection('users').doc(userMessage.fromId).get();
 
-    Map<String,dynamic> nameData = getTitle.data() as Map<String,dynamic>;
-    log('\n \n getTitle : ${nameData['name']} \n \n');
+    log(getTitle.exists.toString());
+
+    String nameData = getTitle.get('name');
+
+
+    log('\n \n getTitle : $nameData \n \n');
     
     final String serverKey = await getFirebaseMessagingToken();
 
@@ -83,7 +87,7 @@ class ApiStorage {
 
         'notification': {
 
-          'title': nameData['name'],
+          'title': nameData,
 
           'body': msg,
 
