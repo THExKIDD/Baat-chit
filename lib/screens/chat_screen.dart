@@ -68,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
         onTap: FocusScope.of(context).unfocus,
         child: PopScope(
           canPop: !_showEmoji, // Control whether the route can be popped
-          onPopInvoked: (didPop) async {
+          onPopInvokedWithResult: (didPop,g) async {
             if (_showEmoji && !didPop) { // Only handle if _isSearching is true and the route wasn't popped
               setState(() {
                 _showEmoji = !_showEmoji;

@@ -2,10 +2,12 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as Firebase_Auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:saver_gallery/saver_gallery.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:userapp/API/api_storage.dart';
 import 'package:userapp/Controllers/controllers.dart';
@@ -160,86 +162,61 @@ static Future<void> updateUserInfo() async{
 
   }
 
-  //download image
-  /*static Future<void> downloadImage(String fileUrl) async {
+ static void imageUrlFetcher(Message message)
+ {
 
-    try {
+   String url = message.message;
 
-      // Step 1: Extract the file path from the URL
+   log(url);
 
-      String searchString = 'chat_image';
+/*   // Define the substring to search for
+   String searchString = 'chat_image';
 
-      int index = fileUrl.indexOf(searchString);
+   // Find the index of the search string
+   int index = url.indexOf(searchString);
 
-      late String result;
+   late String result;
+   if (index != -1) {
+     // Get the substring starting from the end of 'chat_image'
+     result = url.substring(index + searchString.length);
+     log('Substring after "chat_image": $result');
+   } else {
+     log('"$searchString" not found in the URL.');
+   }*/
 
+   imageDownload(url);
 
-      if (index != -1) {
-
-        result = fileUrl.substring(index + searchString.length);
-
-      } else {
-
-        log('"$searchString" not found in the URL.');
-
-        return; // Exit if the search string is not found
-
-      }
-
-
-      // Step 2: Download the image data from Supabase
-
-      final Uint8List imageData = await Supabase.instance.client.storage.from('chat_image').download(result);
+ }
 
 
-      // Step 3: Get the directory to save the image
-
-      final directory = await getApplicationDocumentsDirectory();
-
-      final imageDirectory = Directory('${directory.path}/images');
 
 
-      // Create the directory if it doesn't exist
+  //downloading image
 
-      if (!await imageDirectory.exists()) {
+  static  imageDownload(String finalUrl) async
+  {
 
-        await imageDirectory.create(recursive: true);
+    
+ /*   final imageUrl =  bucket.client.storage.from('chat_image').getPublicUrl(link);
+    log('\n \n $imageUrl \n \n');*/
+    var response = await Dio().get(
+      finalUrl,
+      options: Options(responseType: ResponseType.bytes),
+    );
 
-      }
+    String imageName = DateTime.now().millisecondsSinceEpoch.toString() ;
 
-
-      final filePath = '${imageDirectory.path}$result'; // Ensure the path is correct
-
-      final file = File(filePath);
-
-
-      // Step 4: Write the file data to the local file
-
-      await file.writeAsBytes(imageData);
-
-
-      // Step 5: Save the image to the gallery
-
-      final galleryResult = await GallerySaver.saveImage(file.path);
-
-      if (galleryResult != null && galleryResult) {
-
-        log("Image moved to gallery");
-
-      } else {
-
-        log("Failed to save image to gallery");
-
-      }
-
-    } catch (e) {
-
-      log('downloadImage: ${e.toString()}');
-
-    }
+      await SaverGallery.saveImage(
+      Uint8List.fromList(response.data),
+      quality: 60,
+      fileName: imageName,
+      androidRelativePath: "Pictures/BaatChit/images",
+      skipIfExists: false,
+    );
 
   }
-*/
+
+
 
   static Future<void> updateMessage(Message message,String updatedMsg) async
   {

@@ -256,6 +256,27 @@ Widget _purpleMessage()
                 ),
 
 
+                if(widget.message.type == Type.image)
+                  _OptionItem(
+                      icon: const Icon(Icons.download,
+                        color: Colors.blue,
+                        size: 26,
+                      ),
+                      name: 'Download Image',
+                      onTap: (ctx)async{
+                        if(ctx.mounted) {
+                          Api.imageUrlFetcher(widget.message);
+                        }
+
+
+
+
+
+
+                      }
+                  ),
+
+
 
                 // delete message
                 if(checkUser)
