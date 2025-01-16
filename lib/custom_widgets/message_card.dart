@@ -266,6 +266,12 @@ Widget _purpleMessage()
                       onTap: (ctx)async{
                         if(ctx.mounted) {
                           Api.imageUrlFetcher(widget.message);
+
+                          Navigator.pop(ctx);
+
+
+
+
                         }
 
 
