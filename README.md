@@ -1,7 +1,7 @@
 # Baat chit
 
 A flutter based Android chatting application.
-Baat Chit is a modern and intuitive chatting application designed to connect users seamlessly in real-time. Built with Flutter, the app provides a smooth and responsive messaging experience on Android devices. Baat Chit leverages the power of Firebase for secure authentication and real-time database management, Supabase for multimedia storage, and Google Cloud Messaging for instant notifications. With a clean and user-friendly interface, the app allows users to exchange messages effortlessly while ensuring data security and reliability. Baatein aims to redefine how users communicate, offering a platform that is both efficient and adaptable to future enhancements like media sharing, and advanced customization options.
+Baat Chit is a modern and intuitive chatting application designed to connect users seamlessly in real-time. Built with Flutter, the app provides a smooth and responsive messaging experience on Android devices. Baat Chit leverages the power of Firebase for secure authentication and real-time database management, Supabase for multimedia storage, and Google Cloud Messaging for instant notifications. With a clean and user-friendly interface, the app allows users to exchange messages effortlessly while ensuring data security and reliability. BaatChit aims to redefine how users communicate, offering a platform that is both efficient and adaptable to future enhancements like media sharing, and advanced customization options.
 
 ## Getting Started
 
